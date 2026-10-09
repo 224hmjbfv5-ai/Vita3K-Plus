@@ -13,9 +13,11 @@ jobs:
     timeout-minutes: 90
 
     steps:
-      - name: Checkout source
+  - name: Checkout source
         uses: actions/checkout@v4
         with:
+          repository: nckstwrt/Vita3K-Plus
+          ref: all-enhancements
           submodules: recursive
 
       - name: Install dependencies
