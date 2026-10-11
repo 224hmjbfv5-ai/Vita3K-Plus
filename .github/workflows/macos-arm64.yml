@@ -18,6 +18,16 @@ jobs:
           repository: nckstwrt/Vita3K-Plus
           ref: all-enhancements
           submodules: recursive
+          
+      - name: Generate fork build metadata
+        shell: bash
+        run: |
+          mkdir -p vita3k/util/include/util
+          cat > vita3k/util/include/util/fork_build.h <<'EOF'
+          #pragma once
+          #define FORK_BUILD_SEQ "macOS-ARM64-CI"
+          #define FORK_BUILD_CHANGES "GitHub Actions build"
+          EOF
 
       - name: Install dependencies
         run: |
