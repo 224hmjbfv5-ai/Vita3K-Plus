@@ -40,7 +40,21 @@ jobs:
           
       - name: Patch ATRAC9 compatibility
         run: |
-          sed -i '' 's/Atrac9DecodeBounded/Atrac9Decode/g' vita3k/codec/src/atrac9.cpp
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("vita3k/codec/src/atrac9.cpp")
+          source = path.read_text()
+
+          old = "Atrac9DecodeBounded(decoder_handle, data, superframe_data_left, reinterpret_cast<short *>(result.data()), &decode_used)"
+          new = "Atrac9Decode(decoder_handle, data, reinterpret_cast<short *>(result.data()), &decode_used)"
+
+          if old not in source:
+              raise SystemExit("Expected ATRAC9 call not found")
+
+          path.write_text(source.replace(old, new, 1))
+          print("ATRAC9 compatibility patch applied")
+          PY
 
       - name: Build Release
         run: |
