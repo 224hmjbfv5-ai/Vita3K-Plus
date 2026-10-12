@@ -37,6 +37,10 @@ jobs:
       - name: Configure project
         run: |
           cmake --preset macos-xcode
+          
+      - name: Patch ATRAC9 compatibility
+        run: |
+          sed -i '' 's/Atrac9DecodeBounded/Atrac9Decode/g' vita3k/codec/src/atrac9.cpp
 
       - name: Build Release
         run: |
